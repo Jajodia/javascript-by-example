@@ -24,6 +24,41 @@ class toDoClass {
 	toggleTaskStatus(index) {
 		this.TASKS[index].isComplete = !this.TASKS[index].isComplete;
 		this.loadTasks();
+		
+	}
+	deleteTask(event, taskIndex){
+		event.preventDefault();
+		this.TASKS.splice(taskIndex ,1);
+		this.loadTasks();
+	}
+	addTaskClick()
+	{
+		let target = document.getElementById('addTask');
+		target.innerHTML=`<input type="text" id="task" value="" name="task">`;
+		let add = document.getElementById('addBtn');
+		add.className = "btn btn-success";
+		add.innerHTML = "Confirm";
+		let click = document.getElementById('cancelBtn');
+		click.innerHTML=`<button class="btn btn-danger" onclick="toDo.cancelAdd()">Cancel</button>`;
+		
+		let taskIn = document.getElementById('task');
+		let taskName = taskIn.value;
+		add.classList.onclick = "toDo.addTask(${taskName})";
+		
+	}
+	addTask(x)
+	{
+		alert(x);
+	}
+	cancelAdd()
+	{
+		let target = document.getElementById('addTask');
+		target.innerHTML = ``;
+		let add = document.getElementById('addBtn');
+		add.className = "btn btn-primary";
+		add.innerHTML = "Add";
+		let click = document.getElementById('cancelBtn');
+		click.innerHTML = ``;
 	}
 	generateTaskHtml(task, index) {
 		return `
@@ -48,7 +83,7 @@ class toDoClass {
 				<a 
 				class="" 
 				href="/" 
-				onClick="toDo.deleteTask(event, ${index})">
+				onclick="toDo.deleteTask(event, ${index})">
 					<i 
 					id="deleteTask" 
 					data-id="${index}" 
