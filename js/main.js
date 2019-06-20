@@ -15,10 +15,74 @@ class toDoClass {
 			}
 		]
 		this.loadTasks();
+		
 	}
 	loadTasks() {
 		let tasksHtml = this.TASKS.reduce(((html, task, index) => html+=this.generateTaskHtml(task, index)),'');
 		document.getElementById('taskList').innerHTML = tasksHtml;
+	}
+	getDocIn()
+	{
+		let x = document.getElementById('addTask');
+		return x;
+	}
+	getDocConfirm() {
+		let x = document.getElementById('confirm');
+		return x;
+	}
+	getDocCancel() {
+		let x = document.getElementById('cancel');
+		return x;
+	}
+	getDocAdd()
+	{
+		let x = document.getElementById('add');
+		return x;
+	}
+	
+
+	addTaskClick() {
+		let x = this.getDocIn();
+		x.classList.remove("hide");
+		let y = this.getDocConfirm();
+		y.classList.remove("hide");
+		let z = this.getDocCancel();
+		z.classList.remove("hide");
+		let w = this.getDocAdd();
+		w.classList.add("hide");
+	}
+	confirmAdd() {
+		let target = this.getDocIn();
+		this.addTask(target.value);
+		target.value = "";
+	}
+	cancelAdd() {
+		let x = this.getDocIn();
+		x.classList.add("hide");
+		let y = this.getDocConfirm();
+		y.classList.add("hide");
+		let z = this.getDocCancel();
+		z.classList.add("hide");
+		let w = this.getDocAdd();
+		w.classList.remove("hide");
+	}
+	addTask(task) {
+		
+		let newTask = {
+			task,
+			isComplete: false,
+		};
+		let parentDiv = document.getElementById('addTask').parentElement;
+		if( task === '') {
+			parentDiv.classList.add("has-error");
+		}
+		else {
+			parentDiv.classList.remove("has-error");
+			this.TASKS.push(newTask);
+			this.loadTasks();
+			this.cancelAdd();
+		}
+		
 	}
 
 	toggleTaskStatus(index) {
@@ -26,43 +90,14 @@ class toDoClass {
 		this.loadTasks();
 		
 	}
-	deleteTask(event, taskIndex){
+	deleteTask(event, taskIndex) {
 		event.preventDefault();
 		this.TASKS.splice(taskIndex ,1);
 		this.loadTasks();
 	}
-	addTaskClick()
-	{
-		let target = document.getElementById('addTask');
-		target.innerHTML=`<input type="text" id="task" value="" name="task">`;
-		let add = document.getElementById('addBtn');
-		add.className = "btn btn-success";
-		add.innerHTML = "Confirm";
-		let click = document.getElementById('cancelBtn');
-		click.innerHTML=`<button class="btn btn-danger" onclick="toDo.cancelAdd()">Cancel</button>`;
-		
-		let taskIn = document.getElementById('task');
-		let taskName = taskIn.value;
-		add.classList.onclick = "toDo.addTask(${taskName})";
-		
-	}
-	addTask(x)
-	{
-		alert(x);
-	}
-	cancelAdd()
-	{
-		let target = document.getElementById('addTask');
-		target.innerHTML = ``;
-		let add = document.getElementById('addBtn');
-		add.className = "btn btn-primary";
-		add.innerHTML = "Add";
-		let click = document.getElementById('cancelBtn');
-		click.innerHTML = ``;
-	}
 	generateTaskHtml(task, index) {
 		return `
-		<li class="list-group-item checkbox">
+		<li class="task checkbox ${task.isComplete ? 'success' : ''}">
 		<div class="row">
 			<div class="col-md-1 col-xs-1 col-lg-1 col-sm-1 checkbox">
 				<label>

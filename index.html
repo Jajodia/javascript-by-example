@@ -15,17 +15,19 @@
     
 </head> 
 <body>
-    
     <div id="taskList"></div>
     <br><br>
-    <div class="manage">
-        <div id="addTask"></div>
+    <div class="manage ">
+        <input type="text" id="addTask" class="hide" value="">
         <br>
-        <button id="addBtn" class="btn btn-primary" onclick="toDo.addTaskClick()">Add</button>
-        <span id="cancelBtn"></span>
-        <span id="cnfBtn"></span>
+        <button id = "confirm" class="btn btn-success hide" onclick="toDo.confirmAdd()">Confirm</button>
+        <button id = "cancel" class="btn btn-danger hide" onclick="toDo.cancelAdd()">Cancel</button>
+        <button id = "add" class="btn btn-primary" onclick="toDo.addTaskClick()">Add</button>   
     </div>
     
+     
+
+  
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
     <script src="node_modules/jquery/dist/jquery.slim.min.js"></script>
