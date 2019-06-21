@@ -1,6 +1,8 @@
 class toDoClass {
 	constructor() {
-		this.TASKS = [
+		this.TASKS = JSON.parse(localStorage.getItem('TASKS'));
+		if(!this.TASKS) {
+			this.TASKS = [
 			{
 				task: 'Go to Dentist',
 				isComplete: false
@@ -13,13 +15,15 @@ class toDoClass {
 				task: 'Renew Library Account',
 				isComplete: false
 			}
-		]
+			]	
+		}
 		this.loadTasks();
-		
+		this.addEventListeners();
 	}
 	loadTasks() {
 		let tasksHtml = this.TASKS.reduce(((html, task, index) => html+=this.generateTaskHtml(task, index)),'');
 		document.getElementById('taskList').innerHTML = tasksHtml;
+		localStorage.setItem('TASKS' , JSON.stringify(this.TASKS));
 	}
 	getDocIn()
 	{
@@ -38,6 +42,15 @@ class toDoClass {
 	{
 		let x = document.getElementById('add');
 		return x;
+	}
+	addEventListeners() {
+		
+		this.getDocIn().addEventListener('keypress', event => {
+			if (event.keyCode === 13) {
+				this.addTask(event.target.value);
+				event.target.value = '';
+			}
+		});
 	}
 	
 
@@ -97,9 +110,9 @@ class toDoClass {
 	}
 	generateTaskHtml(task, index) {
 		return `
-		<li class="task checkbox ${task.isComplete ? 'success' : ''}">
-		<div class="row">
-			<div class="col-md-1 col-xs-1 col-lg-1 col-sm-1 checkbox">
+		<li class="task checkbox ${task.isComplete ?'complete':'nc'}">
+		<div class="row card">
+			<div class="col-md-1 col-xs-1 col-lg-1 col-sm-1 checkbox check">
 				<label>
 					<input 
 						id="toggleTaskStatus" 
@@ -110,11 +123,10 @@ class toDoClass {
 				</label>
 			</div>
 
-			<div class="col-md-10 col-xs-10 col-lg-10 col-sm-10 task-text ${task.isComplete ? 'complete' : ''}">
+			<div class="col-md-10 col-xs-10 col-lg-10 col-sm-10 item">
 				${task.task}
 			</div>
- 
-			<div class="col-md-1 col-xs-1 col-lg-1 col-sm-1 delete-icon-area">
+			<div class="del col-md-1 col-xs-1 col-lg-1 col-sm-1 delete-icon-area">
 				<a 
 				class="" 
 				href="/" 
